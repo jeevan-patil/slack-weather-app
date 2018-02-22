@@ -1,0 +1,14 @@
+service: slash-command-handlers
+
+provider:
+  name: aws
+  stage: prod
+  runtime: nodejs6.10
+
+functions:
+   cityWeather:
+    description: Handler to provide weather report from the city
+    handler: handler.cityWeather
+   greetUser:
+    description: Handler to greet user.
+    handler: handler.greetUser
