@@ -1,0 +1,9 @@
+{
+  "currentIntent": {
+    "name": "CityWeather",
+    "slots": {
+      "city": "New York"
+    }
+  },
+  "version": "1.0"
+}

@@ -6,15 +6,22 @@ const UNIT_SYSTEM = "units=metric";
 const ENDPOINT = "http://api.openweathermap.org/data/2.5/weather?";
 
 var Weather = {
-  weatherFromCity: function(city, callback) {
+  weatherFromCity: function (city, callback) {
     const apiUrl = buildApiUrl() + 'q=' + city;
-    client.get(apiUrl, function (data, response) {
+    var request = client.get(apiUrl, function (data, response) {
       callback(data);
+    });
+
+    request.on('error', function (err) {
+      console.log('Error occurred while fetching weather information.', err.request.options);
+      callback({
+        'cod': '404'
+      });
     });
   }
 };
 
-var buildApiUrl = function() {
+var buildApiUrl = function () {
   return ENDPOINT + API_KEY + "&" + UNIT_SYSTEM + "&";
 };
 

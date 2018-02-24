@@ -64,7 +64,7 @@ module.exports.greetUser = (event, context, callback) => {
   const outputSessionAttributes = event.sessionAttributes || {};
   callback(null, close(outputSessionAttributes, 'Fulfilled', {
     contentType: 'PlainText',
-    content: 'Hello. Ask me to provide weather information from any city.'
+    content: 'Hello. Just say, tell me weather.'
   }));
 };
 
