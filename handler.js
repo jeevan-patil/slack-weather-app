@@ -20,32 +20,42 @@ module.exports.cityWeather = (event, context, callback) => {
   const outputSessionAttributes = event.sessionAttributes || {};
 
   weather.weatherFromCity(city, function (data) {
+    function prepareWeatherReport() {
+      var sky = data.weather[0].main;
+
+      if (sky.indexOf('Clouds') === 0) {
+        sky = 'Sky is Cloudy';
+      } else if (sky.indexOf('Haze') === 0) {
+        sky = 'Sky is Hazy';
+      } else if (sky.indexOf('Rain') === 0) {
+        sky = 'It is rainy';
+      } else {
+        sky = 'Sky is ' + sky;
+      }
+
+      const temp = data.main.temp;
+      const humidity = data.main.humidity;
+      const windspeed = data.wind.speed;
+      var report = "Weather information from " + city + ". " + sky + ".";
+      report = report + " Temperature is " + temp + " degree celcius.";
+      report = report + " Humidity is " + humidity + " percent.";
+      report = report + " Wind speed is " + windspeed + " meters per second.";
+      return report;
+    }
+
     if (data) {
-      if (data.cod == '404') {
+      if(data.cod == '401') {
+        callback(null, close(outputSessionAttributes, 'Fulfilled', {
+          contentType: 'PlainText',
+          content: 'There was an error fetching weather from ' + city
+        }));
+      } else if (data.cod == '404') {
         callback(null, close(outputSessionAttributes, 'Fulfilled', {
           contentType: 'PlainText',
           content: 'Sorry! Could not gather weather information from the provided city. Please try again!'
         }));
       } else {
-        var sky = data.weather[0].main;
-
-        if(sky.indexOf('Clouds') === 0) {
-          sky = 'Sky is Cloudy';
-        } else if(sky.indexOf('Haze') === 0) {
-          sky = 'Sky is Hazy';
-        } else if(sky.indexOf('Rain') === 0) {
-          sky = 'It is rainy';
-        } else {
-          sky = 'Sky is ' + sky;
-        }
-
-        const temp = data.main.temp;
-        const humidity = data.main.humidity;
-        const windspeed = data.wind.speed;
-        var report = "Weather information from " + city + ". " + sky + ".";
-        report = report + " Temperature is " + temp + " degree celcius.";
-        report = report + " Humidity is " + humidity + " percent.";
-        report = report + " Wind speed is " + windspeed + " meters per second.";
+        var report = prepareWeatherReport();
         callback(null, close(outputSessionAttributes, 'Fulfilled', {
           contentType: 'PlainText',
           content: report

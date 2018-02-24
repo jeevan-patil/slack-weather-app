@@ -1,22 +1,15 @@
 var Client = require('node-rest-client').Client;
 var client = new Client();
 
-const API_KEY = "appid=****";
+const API_KEY = "appid=0207715a03e5380b29111eb1c9679fbd";
 const UNIT_SYSTEM = "units=metric";
 const ENDPOINT = "http://api.openweathermap.org/data/2.5/weather?";
 
 var Weather = {
   weatherFromCity: function (city, callback) {
     const apiUrl = buildApiUrl() + 'q=' + city;
-    var request = client.get(apiUrl, function (data, response) {
+    client.get(apiUrl, function (data, response) {
       callback(data);
-    });
-
-    request.on('error', function (err) {
-      console.log('Error occurred while fetching weather information.', err.request.options);
-      callback({
-        'cod': '404'
-      });
     });
   }
 };
