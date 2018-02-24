@@ -1,7 +1,7 @@
 var Client = require('node-rest-client').Client;
 var client = new Client();
 
-const API_KEY = "appid=0207715a03e5380b29111eb1c9679fbd";
+const API_KEY = "appid=****";
 const UNIT_SYSTEM = "units=metric";
 const ENDPOINT = "http://api.openweathermap.org/data/2.5/weather?";
 
